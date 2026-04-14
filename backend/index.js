@@ -26,3 +26,7 @@ app.get("/search", (req, res) => {
 app.listen(3000, () => {
   console.log("🔥 Backend running on http://localhost:3000");
 });
+const sync = require("./sync");
+
+setInterval(sync, 1000 * 60 * 60); // every hour
+sync();

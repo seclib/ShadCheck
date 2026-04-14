@@ -50,6 +50,10 @@
   }
 }
 
+body {
+  margin: 0;
+}
+
 #root {
   width: 1126px;
   max-width: 100%;
@@ -60,10 +64,6 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-}
-
-body {
-  margin: 0;
 }
 
 h1,
@@ -108,4 +108,13 @@ code {
   line-height: 135%;
   padding: 4px 8px;
   background: var(--code-bg);
+}
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  overflow: hidden;
+  font-family: sans-serif;
 }
