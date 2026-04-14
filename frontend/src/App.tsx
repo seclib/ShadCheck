@@ -1,83 +1,94 @@
-import { getGames, searchGames } from "./api/games";
-import axios from "axios";
-
-const load = async () => {
-  const res = await axios.get("http://localhost:3000/games");
-  setGames(res.data);
-};
+import { useEffect, useState } from "react";
+import { getGames } from "./api/games";
+import type { Game } from "./types/game";
 
 export default function App() {
   const [games, setGames] = useState<Game[]>([]);
   const [search, setSearch] = useState("");
 
-useEffect(() => {
-  load();
-}, []);
+  useEffect(() => {
+    getGames().then(setGames);
+  }, []);
 
-const load = async () => {
-  const res = await fetch("http://localhost:3000/games");
-  const data = await res.json();
-  setGames(data);
-};
+  const filtered = games.filter((g) =>
+    g.title.toLowerCase().includes(search.toLowerCase())
+  );
 
-  const onSearch = async (value: string) => {
-    setSearch(value);
+return (
+  <div className="min-h-screen bg-black text-white p-6">
 
-    if (!value) return load();
-
-    const data = await searchGames(value);
-    setGames(data);
-  };
-
-  const statusColor = (status: Game["status"]) => {
-    switch (status) {
-      case "playable":
-        return "text-green-400";
-      case "ingame":
-        return "text-yellow-400";
-      case "menus":
-        return "text-orange-400";
-      case "boots":
-      case "nothing":
-        return "text-red-400";
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-[#0d0d0d] text-white p-6">
-      
-      <h1 className="text-3xl font-bold mb-4">
-        🎮 ShadCheck
+    {/* HEADER */}
+    <div className="border-b border-gray-800 pb-4">
+      <h1 className="text-5xl font-extrabold text-blue-400">
+        🎮 SHADCHECK
       </h1>
+      <p className="text-gray-400 mt-2">
+        PS4 Compatibility Tracker
+      </p>
+    </div>
 
+    {/* SEARCH */}
+    <div className="mt-6">
       <input
-        className="w-full p-2 rounded text-black"
-        placeholder="Search CUSA or game..."
+        className="w-full p-4 text-black text-lg rounded-lg"
+        placeholder="Search games or CUSA..."
         value={search}
-        onChange={(e) => onSearch(e.target.value)}
+        onChange={(e) => setSearch(e.target.value)}
       />
+    </div>
 
-      <div className="mt-6 grid gap-3">
-        {games.map((g) => (
-          <div
-            key={g.cusa}
-            className="bg-[#1a1a1a] p-4 rounded hover:bg-[#222]"
-          >
-            <div className="text-lg font-bold">
-              {g.title}
-            </div>
-
-            <div className="text-sm opacity-70">
-              {g.cusa}
-            </div>
-
-            <div className={`font-semibold ${statusColor(g.status)}`}>
-              {g.status.toUpperCase()}
-            </div>
-          </div>
-        ))}
+    {/* STATS BAR */}
+    <div className="flex gap-4 mt-6 text-sm">
+      <div className="bg-green-600 px-3 py-1 rounded">
+        PLAYABLE
+      </div>
+      <div className="bg-yellow-600 px-3 py-1 rounded">
+        IN-GAME
+      </div>
+      <div className="bg-red-600 px-3 py-1 rounded">
+        ISSUES
       </div>
     </div>
-  );
+
+    {/* GRID */}
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+
+      {filtered.map((game) => (
+        <div
+          key={game.cusa}
+          className="bg-[#111] border border-gray-700 p-5 rounded-xl hover:border-blue-500 transition"
+        >
+
+          <h2 className="text-xl font-bold text-white">
+            {game.title}
+          </h2>
+
+          <p className="text-gray-400 text-sm mt-1">
+            {game.cusa}
+          </p>
+
+          <div className="mt-3">
+            <span
+              className={`
+                px-3 py-1 rounded text-sm font-bold
+                ${
+                  game.status === "playable"
+                    ? "bg-green-600"
+                    : game.status === "ingame"
+                    ? "bg-yellow-600"
+                    : "bg-red-600"
+                }
+              `}
+            >
+              {game.status.toUpperCase()}
+            </span>
+          </div>
+
+        </div>
+      ))}
+
+    </div>
+
+  </div>
+);
 }
-console.log(games);

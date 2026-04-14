@@ -55,3 +55,27 @@ node index.js
 Backend runs on:
 
 http://localhost:3000
+
+🔌 API Endpoints
+GET /games
+
+Returns all games
+
+GET /search?q=xxx
+
+Search games by title or CUSA
+
+📊 Example Data
+{
+  "title": "Bloodborne",
+  "cusa": "CUSA00900",
+  "status": "ingame",
+  "os": "linux"
+}
+🎯 Roadmap
+SteamDB-style UI upgrade
+Filters (status / OS)
+Game detail page
+Auto sync from shadPS4 compatibility GitHub
+Emulator log analyzer
+Electron desktop version
