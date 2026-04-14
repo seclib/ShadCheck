@@ -1,0 +1,14 @@
+[
+  {
+    "title": "Bloodborne",
+    "cusa": "CUSA00900",
+    "status": "ingame",
+    "os": "linux"
+  },
+  {
+    "title": "God of War",
+    "cusa": "CUSA07410",
+    "status": "playable",
+    "os": "linux"
+  }
+]
